@@ -125,7 +125,7 @@ open class PanModalPresentationController: UIPresentationController {
      the presented view's properties
      */
     private lazy var panContainerView: PanContainerView = {
-        let frame = containerView?.frame ?? .zero
+        let frame = containerView?.frame ?? presentingViewController.view.bounds
         return PanContainerView(presentedView: presentedViewController.view, frame: frame)
     }()
 
@@ -371,7 +371,7 @@ private extension PanModalPresentationController {
         let panFrame = panContainerView.frame
         panContainerView.frame.size = frame.size
         
-        if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
+        if panFrame.height > 0 && ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
             // if the container is already in the correct position, no need to adjust positioning
             // (rotations & size changes cause positioning to be out of sync)
             let yPosition = panFrame.origin.y - panFrame.height + frame.height
